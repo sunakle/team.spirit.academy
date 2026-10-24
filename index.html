@@ -22,7 +22,6 @@
     --rainbow: linear-gradient(90deg, #ff2d2d, #ff8c1a, #ffe81a, #2ecc40, #1e90ff, #a23cff);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
   body {
     background: var(--bg);
     color: var(--text);
@@ -476,6 +475,45 @@
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Плавная прокрутка по якорям: кривая cubic-bezier(0.215, 1, 0.36, 1)
+  function bezier(x1, y1, x2, y2) {
+    const c = (a, b, t) => 3 * a * t * (1 - t) ** 2 + 3 * b * t * t * (1 - t) + t ** 3;
+    return x => {
+      let lo = 0, hi = 1, t = x;
+      for (let i = 0; i < 20; i++) {
+        t = (lo + hi) / 2;
+        c(x1, x2, t) < x ? lo = t : hi = t;
+      }
+      return c(y1, y2, t);
+    };
+  }
+  const ease = bezier(0.215, 1, 0.36, 1);
+  let scrollAnim;
+
+  function smoothScrollTo(y, duration = 700) {
+    cancelAnimationFrame(scrollAnim);
+    const start = scrollY, dist = y - start, t0 = performance.now();
+    const step = now => {
+      const k = Math.min((now - t0) / duration, 1);
+      scrollTo(0, start + dist * ease(k));
+      if (k < 1) scrollAnim = requestAnimationFrame(step);
+    };
+    scrollAnim = requestAnimationFrame(step);
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    const target = id === '#' ? document.body : document.querySelector(id);
+    if (!target) return;
+    e.preventDefault();
+    const offset = document.querySelector('header').offsetHeight;
+    const y = id === '#' ? 0 : target.getBoundingClientRect().top + scrollY - offset;
+    smoothScrollTo(Math.max(0, y));
+    history.replaceState(null, '', id === '#' ? location.pathname : id);
+  }));
+  ['wheel', 'touchstart', 'keydown'].forEach(ev =>
+    addEventListener(ev, () => cancelAnimationFrame(scrollAnim), { passive: true }));
 
   const team = [
     { nick: 'sunakle', place: 'Львов, Украина', lat: 49.839, lng: 24.029, img: 'img/sunakle.jpg' },
