@@ -159,16 +159,17 @@
   /* globe */
   #globe {
     height: 560px; border-radius: 20px; overflow: hidden; border: 1px solid var(--line);
-    background: radial-gradient(circle at 50% 50%, #141a2b, #05060a 70%); cursor: grab;
+    background: radial-gradient(circle at 50% 50%, #2a0a3d, #07020c 70%); cursor: grab;
   }
+  #globe canvas { filter: drop-shadow(0 0 6px rgba(214, 102, 255, .7)); }
   #globe:active { cursor: grabbing; }
   .pin {
     display: flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; border-radius: 999px;
     background: rgba(11, 13, 18, .85); border: 2px solid transparent; white-space: nowrap;
-    background-clip: padding-box; box-shadow: 0 0 0 2px rgba(255, 255, 255, .15), 0 6px 20px rgba(0, 0, 0, .5);
+    background-clip: padding-box; box-shadow: 0 0 0 2px rgba(224, 123, 255, .6), 0 0 18px rgba(214, 102, 255, .6);
     transform: translate(-50%, -100%); cursor: pointer; pointer-events: auto; font-size: 13px; color: #fff;
   }
-  .pin img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); }
+  .pin img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid #e07bff; }
   .pin b { display: block; font-family: Unbounded, sans-serif; font-size: 12px; }
   .pin small { color: var(--muted); font-size: 11px; }
   .members { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
@@ -472,6 +473,7 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/globe.gl@2.46.2/dist/globe.gl.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -488,18 +490,43 @@
     team.forEach((a, i) => team.slice(i + 1).forEach(b =>
       arcs.push({ startLat: a.lat, startLng: a.lng, endLat: b.lat, endLng: b.lng })));
 
+    // Сетка параллелей и меридианов
+    const grid = [];
+    for (let lat = -75; lat <= 75; lat += 15) {
+      const line = [];
+      for (let lng = -180; lng <= 180; lng += 3) line.push([lat, lng]);
+      grid.push(line);
+    }
+    for (let lng = -180; lng < 180; lng += 15) {
+      const line = [];
+      for (let lat = -90; lat <= 90; lat += 3) line.push([lat, lng]);
+      grid.push(line);
+    }
+
     const globe = Globe()(el)
-      .globeImageUrl('https://cdn.jsdelivr.net/npm/three-globe@2.31.0/example/img/earth-blue-marble.jpg')
-      .bumpImageUrl('https://cdn.jsdelivr.net/npm/three-globe@2.31.0/example/img/earth-topology.png')
       .backgroundColor('rgba(0,0,0,0)')
-      .atmosphereColor('#ffb347')
-      .atmosphereAltitude(0.18)
+      .showAtmosphere(true)
+      .atmosphereColor('#c04dff')
+      .atmosphereAltitude(0.2)
+      .pathsData(grid)
+      .pathPoints(d => d)
+      .pathPointLat(p => p[0])
+      .pathPointLng(p => p[1])
+      .pathPointAlt(0.002)
+      .pathColor(() => 'rgba(214, 102, 255, 0.55)')
+      .pathStroke(null)
+      .pathTransitionDuration(0)
+      .polygonCapColor(() => 'rgba(180, 60, 255, 0.10)')
+      .polygonSideColor(() => 'rgba(0, 0, 0, 0)')
+      .polygonStrokeColor(() => '#f0b0ff')
+      .polygonAltitude(0.004)
+      .polygonsTransitionDuration(0)
       .pointsData(team)
-      .pointColor(() => '#f5c518')
+      .pointColor(() => '#ff7bff')
       .pointAltitude(0.01)
       .pointRadius(0.35)
       .arcsData(arcs)
-      .arcColor(() => ['#ff2d2d', '#ffe81a', '#2ecc40', '#1e90ff', '#a23cff'])
+      .arcColor(() => ['#ff7bff', '#ffffff', '#b44dff'])
       .arcStroke(0.6)
       .arcDashLength(0.4)
       .arcDashGap(0.2)
@@ -514,11 +541,20 @@
         return d;
       });
 
+    const mat = globe.globeMaterial();
+    mat.color.set('#12001f');
+    if (mat.emissive) mat.emissive.set('#1c0030');
+
+    fetch('https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json')
+      .then(r => r.json())
+      .then(w => globe.polygonsData(topojson.feature(w, w.objects.countries).features))
+      .catch(() => {});
+
     const resize = () => globe.width(el.clientWidth).height(el.clientHeight);
     resize();
     window.addEventListener('resize', resize);
 
-    globe.pointOfView({ lat: 46, lng: 46, altitude: 1.2 });
+    globe.pointOfView({ lat: 46, lng: 46, altitude: 1.8 });
     const ctrl = globe.controls();
     ctrl.autoRotate = true;
     ctrl.autoRotateSpeed = 0.6;
