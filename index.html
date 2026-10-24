@@ -556,7 +556,7 @@
         amp: rnd(0.04, 0.14), freq: rnd(0.6, 2.4), speed: rnd(0.6, 1.4) * (Math.random() < 0.5 ? -1 : 1), phase: rnd(0, 6.28)
       }))
     }));
-    let w, h, visible = true, raf;
+    let w, h, visible = true, raf, fadeStart = null;
 
     function resize() {
       const dpr = Math.min(devicePixelRatio || 1, 2);
@@ -565,19 +565,21 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
-    function draw(t) {
-      t /= 1000;
+    function draw(now) {
+      if (fadeStart === null) fadeStart = now;
+      const k = Math.min((now - fadeStart) / 1500, 1);
+      const fade = k * k * (3 - 2 * k);
+      const t = now / 1000;
       ctx.clearRect(0, 0, w, h);
       ctx.filter = 'blur(18px)';
       for (const wv of waves) {
-        const off = (wv.shift + wv.drift * t) % 1;
-        const g = ctx.createLinearGradient(0, 0, w, 0);
-        colors.concat(colors).forEach((c, i, arr) => {
-          let pos = i / (arr.length - 1) - off;
-          if (pos < 0) pos += 1;
-          g.addColorStop(Math.min(Math.max(pos, 0), 1), c);
-        });
-        ctx.globalAlpha = wv.alpha;
+        // Две копии радуги подряд, сдвигаем весь градиент — цвета перетекают без скачков
+        const off = ((wv.shift + wv.drift * t) % 1 + 1) % 1;
+        const x0 = -off * w;
+        const g = ctx.createLinearGradient(x0, 0, x0 + 2 * w, 0);
+        const seq = colors.concat(colors, colors[0]);
+        seq.forEach((c, i) => g.addColorStop(i / (seq.length - 1), c));
+        ctx.globalAlpha = wv.alpha * fade;
         ctx.fillStyle = g;
         ctx.beginPath();
         ctx.moveTo(-40, h + 40);
@@ -599,6 +601,7 @@
     resize();
     addEventListener('resize', resize);
     new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !visible) fadeStart = null;
       visible = e.isIntersecting;
       cancelAnimationFrame(raf);
       if (visible) raf = requestAnimationFrame(draw);
