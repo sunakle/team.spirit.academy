@@ -551,9 +551,9 @@
       base: 0.45 + i * 0.12,
       alpha: 0.35 + i * 0.18,
       shift: rnd(0, 1),
-      drift: rnd(0.015, 0.04) * (Math.random() < 0.5 ? -1 : 1),
+      drift: rnd(0.008, 0.02) * (Math.random() < 0.5 ? -1 : 1),
       parts: Array.from({ length: 3 }, () => ({
-        amp: rnd(0.04, 0.14), freq: rnd(0.6, 2.4), speed: rnd(0.2, 0.5) * (Math.random() < 0.5 ? -1 : 1), phase: rnd(0, 6.28)
+        amp: rnd(0.04, 0.14), freq: rnd(0.6, 2.4), speed: rnd(0.1, 0.25) * (Math.random() < 0.5 ? -1 : 1), phase: rnd(0, 6.28)
       }))
     }));
     let w, h, visible = true, raf, fadeStart = null;
