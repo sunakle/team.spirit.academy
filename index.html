@@ -188,14 +188,7 @@
 
   /* donate */
   .donate { display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: center; padding: 48px; }
-  .donate .flag-il {
-    width: 160px; height: 116px; border-radius: 12px; background: #fff; position: relative; overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, .4);
-  }
-  .donate .flag-il::before, .donate .flag-il::after { content: ""; position: absolute; left: 0; right: 0; height: 16px; background: #0038b8; }
-  .donate .flag-il::before { top: 12px; }
-  .donate .flag-il::after { bottom: 12px; }
-  .donate .flag-il span { position: absolute; inset: 0; display: grid; place-items: center; color: #0038b8; font-size: 52px; line-height: 1; }
+  .donate .flag-il { display: block; width: 160px; height: auto; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, .4); }
   .donate p { color: var(--muted); margin-bottom: 24px; max-width: 560px; }
 
   /* globe */
@@ -457,7 +450,7 @@
       <h2>Пожертвования</h2>
       <p class="lead">Поддержите солдат Армии обороны Израиля.</p>
       <div class="card donate">
-        <div class="flag-il"><span>✡</span></div>
+        <img class="flag-il" src="img/israel.png" alt="Флаг Израиля">
         <div>
           <h3>Friends of the IDF</h3>
           <p>Пожертвования принимает благотворительная организация FIDF: она помогает солдатам ЦАХАЛ, ветеранам и их семьям. Оплата проходит на официальном сайте фонда.</p>
