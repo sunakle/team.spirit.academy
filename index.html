@@ -562,6 +562,14 @@
     ctrl.maxDistance = 600;
     el.addEventListener('pointerdown', () => { ctrl.autoRotate = false; });
 
+    // Колёсико над метками тоже приближает глобус, а не прокручивает страницу
+    const canvas = globe.renderer().domElement;
+    el.addEventListener('wheel', e => {
+      if (e.target === canvas) return;
+      e.preventDefault();
+      canvas.dispatchEvent(new WheelEvent('wheel', e));
+    }, { passive: false });
+
     function flyTo(m) {
       ctrl.autoRotate = false;
       globe.pointOfView({ lat: m.lat, lng: m.lng, altitude: 0.5 }, 1500);
