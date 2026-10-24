@@ -50,7 +50,7 @@
   .logo { display: flex; align-items: center; gap: 10px; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 18px; letter-spacing: .5px; }
   .logo img { width: 40px; height: 40px; }
   .stripe { height: 5px; background: url(img/flag.png) center / 100% 100%; }
-    .menu { display: flex; gap: 28px; font-size: 15px; color: var(--muted); }
+    .menu { display: flex; gap: 20px; font-size: 14px; color: var(--muted); }
   .menu a:hover { color: var(--text); }
   .btn {
     display: inline-block; padding: 14px 28px; border-radius: 10px;
@@ -156,6 +156,30 @@
   .donate .flag-il span { position: absolute; inset: 0; display: grid; place-items: center; color: #0038b8; font-size: 52px; line-height: 1; }
   .donate p { color: var(--muted); margin-bottom: 24px; max-width: 560px; }
 
+  /* globe */
+  #globe {
+    height: 560px; border-radius: 20px; overflow: hidden; border: 1px solid var(--line);
+    background: radial-gradient(circle at 50% 50%, #141a2b, #05060a 70%); cursor: grab;
+  }
+  #globe:active { cursor: grabbing; }
+  .pin {
+    display: flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; border-radius: 999px;
+    background: rgba(11, 13, 18, .85); border: 2px solid transparent; white-space: nowrap;
+    background-clip: padding-box; box-shadow: 0 0 0 2px rgba(255, 255, 255, .15), 0 6px 20px rgba(0, 0, 0, .5);
+    transform: translate(-50%, -100%); cursor: pointer; pointer-events: auto; font-size: 13px; color: #fff;
+  }
+  .pin img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); }
+  .pin b { display: block; font-family: Unbounded, sans-serif; font-size: 12px; }
+  .pin small { color: var(--muted); font-size: 11px; }
+  .members { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+  .members button {
+    display: flex; align-items: center; gap: 8px; padding: 6px 14px 6px 6px; border-radius: 999px; cursor: pointer;
+    background: var(--card); border: 1px solid var(--line); color: var(--text); font: inherit; font-size: 14px;
+  }
+  .members button:hover { border-color: var(--accent); }
+  .members img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
+  .hint { color: var(--muted); font-size: 13px; margin-top: 12px; }
+
   /* steps */
   .steps { counter-reset: step; }
   .step { position: relative; padding-top: 64px; }
@@ -189,12 +213,14 @@
   .disclaimer { width: 100%; font-size: 12px; opacity: .7; }
   .socials a:hover { color: var(--accent); }
 
+  @media (max-width: 1100px) { .menu { display: none; } }
   @media (max-width: 860px) {
     .menu { display: none; }
     .grid-3, .grid-2 { grid-template-columns: 1fr; }
     .grid-4 { grid-template-columns: repeat(2, 1fr); }
     .hero-grid { grid-template-columns: 1fr; }
     .hero-img { max-width: 300px; }
+    #globe { height: 420px; }
     .donate { grid-template-columns: 1fr; padding: 28px; justify-items: start; }
     section { padding: 72px 0; }
     .hero { padding: 80px 0; }
@@ -214,6 +240,7 @@
       <a href="#about">О нас</a>
       <a href="#programs">Программы</a>
       <a href="#coaches">Тренеры</a>
+      <a href="#world">Глобус</a>
       <a href="#pride">Pride</a>
       <a href="#donate">Пожертвования</a>
       <a href="#join">Как попасть</a>
@@ -344,6 +371,16 @@
     </div>
   </section>
 
+  <section id="world">
+    <div class="wrap">
+      <h2>Наш интернациональный коллектив</h2>
+      <p class="lead">Мы из разных уголков мира, но играем как одна команда. Покрутите глобус и найдите каждого.</p>
+      <div id="globe"></div>
+      <div class="members" id="members"></div>
+      <p class="hint">Тяните мышкой, чтобы вращать, колёсиком — приближать. Нажмите на участника, чтобы перелететь к нему.</p>
+    </div>
+  </section>
+
   <section id="pride" class="pride">
     <div class="wrap">
       <h2>🏳️‍🌈 Представители ЛГБТ-сообщества в нашей команде</h2>
@@ -434,8 +471,76 @@
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/globe.gl@2.46.2/dist/globe.gl.min.js"></script>
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  const team = [
+    { nick: 'sunakle', place: 'Львов, Украина', lat: 49.839, lng: 24.029, img: 'img/sunakle.jpg' },
+    { nick: 'stickbat', place: 'пос. Дубки, Саратовская обл.', lat: 51.67, lng: 45.95, img: 'img/stickbat.jpg' },
+    { nick: 'Михаил', place: 'Грозный, Чечня', lat: 43.317, lng: 45.694, img: 'img/mikhail.jpg' },
+    { nick: 'twiz', place: 'Ташкент, Узбекистан', lat: 41.311, lng: 69.279, img: 'img/twiz.jpg' }
+  ];
+
+  const el = document.getElementById('globe');
+  if (window.Globe) {
+    const arcs = [];
+    team.forEach((a, i) => team.slice(i + 1).forEach(b =>
+      arcs.push({ startLat: a.lat, startLng: a.lng, endLat: b.lat, endLng: b.lng })));
+
+    const globe = Globe()(el)
+      .globeImageUrl('https://cdn.jsdelivr.net/npm/three-globe@2.31.0/example/img/earth-blue-marble.jpg')
+      .bumpImageUrl('https://cdn.jsdelivr.net/npm/three-globe@2.31.0/example/img/earth-topology.png')
+      .backgroundColor('rgba(0,0,0,0)')
+      .atmosphereColor('#ffb347')
+      .atmosphereAltitude(0.18)
+      .pointsData(team)
+      .pointColor(() => '#f5c518')
+      .pointAltitude(0.01)
+      .pointRadius(0.35)
+      .arcsData(arcs)
+      .arcColor(() => ['#ff2d2d', '#ffe81a', '#2ecc40', '#1e90ff', '#a23cff'])
+      .arcStroke(0.6)
+      .arcDashLength(0.4)
+      .arcDashGap(0.2)
+      .arcDashAnimateTime(3000)
+      .htmlElementsData(team)
+      .htmlAltitude(0.02)
+      .htmlElement(m => {
+        const d = document.createElement('div');
+        d.className = 'pin';
+        d.innerHTML = `<img src="${m.img}" alt=""><div><b>${m.nick}</b><small>${m.place}</small></div>`;
+        d.onclick = () => flyTo(m);
+        return d;
+      });
+
+    const resize = () => globe.width(el.clientWidth).height(el.clientHeight);
+    resize();
+    window.addEventListener('resize', resize);
+
+    globe.pointOfView({ lat: 46, lng: 46, altitude: 1.2 });
+    const ctrl = globe.controls();
+    ctrl.autoRotate = true;
+    ctrl.autoRotateSpeed = 0.6;
+    ctrl.minDistance = 120;
+    ctrl.maxDistance = 600;
+    el.addEventListener('pointerdown', () => { ctrl.autoRotate = false; });
+
+    function flyTo(m) {
+      ctrl.autoRotate = false;
+      globe.pointOfView({ lat: m.lat, lng: m.lng, altitude: 0.5 }, 1500);
+    }
+
+    const list = document.getElementById('members');
+    team.forEach(m => {
+      const b = document.createElement('button');
+      b.innerHTML = `<img src="${m.img}" alt="">${m.nick} · ${m.place}`;
+      b.onclick = () => flyTo(m);
+      list.appendChild(b);
+    });
+  } else {
+    el.innerHTML = '<p style="padding:24px;color:var(--muted)">Не удалось загрузить глобус.</p>';
+  }
 </script>
 </body>
 </html>
