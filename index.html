@@ -144,6 +144,18 @@
   .pride-card p { color: var(--muted); }
   @keyframes rainbow { to { background-position: 300% 0; } }
 
+  /* donate */
+  .donate { display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: center; padding: 48px; }
+  .donate .flag-il {
+    width: 160px; height: 116px; border-radius: 12px; background: #fff; position: relative; overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .4);
+  }
+  .donate .flag-il::before, .donate .flag-il::after { content: ""; position: absolute; left: 0; right: 0; height: 16px; background: #0038b8; }
+  .donate .flag-il::before { top: 12px; }
+  .donate .flag-il::after { bottom: 12px; }
+  .donate .flag-il span { position: absolute; inset: 0; display: grid; place-items: center; color: #0038b8; font-size: 52px; line-height: 1; }
+  .donate p { color: var(--muted); margin-bottom: 24px; max-width: 560px; }
+
   /* steps */
   .steps { counter-reset: step; }
   .step { position: relative; padding-top: 64px; }
@@ -183,6 +195,7 @@
     .grid-4 { grid-template-columns: repeat(2, 1fr); }
     .hero-grid { grid-template-columns: 1fr; }
     .hero-img { max-width: 300px; }
+    .donate { grid-template-columns: 1fr; padding: 28px; justify-items: start; }
     section { padding: 72px 0; }
     .hero { padding: 80px 0; }
   }
@@ -202,6 +215,7 @@
       <a href="#programs">Программы</a>
       <a href="#coaches">Тренеры</a>
       <a href="#pride">Pride</a>
+      <a href="#donate">Пожертвования</a>
       <a href="#join">Как попасть</a>
       <a href="#faq">FAQ</a>
     </nav>
@@ -345,12 +359,27 @@
     </div>
   </section>
 
+  <section id="donate" class="alt">
+    <div class="wrap">
+      <h2>Пожертвования</h2>
+      <p class="lead">Поддержите солдат Армии обороны Израиля.</p>
+      <div class="card donate">
+        <div class="flag-il"><span>✡</span></div>
+        <div>
+          <h3>Friends of the IDF</h3>
+          <p>Пожертвования принимает благотворительная организация FIDF: она помогает солдатам ЦАХАЛ, ветеранам и их семьям. Оплата проходит на официальном сайте фонда.</p>
+          <a href="https://www.fidf.org/" class="btn" target="_blank" rel="noopener">Пожертвовать</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="join">
     <div class="wrap">
       <h2>Как попасть в академию</h2>
       <p class="lead">Четыре простых шага от заявки до первой тренировки.</p>
       <div class="grid grid-2 steps">
-        <div class="card step"><h3>Заявка</h3><p>Оставьте заявку в Telegram или Discord — это займёт минуту.</p></div>
+        <div class="card step"><h3>Заявка</h3><p>Оставьте заявку в нашем Discord — это займёт минуту.</p></div>
         <div class="card step"><h3>Отбор</h3><p>Короткая игра-тест с тренером, чтобы оценить ваш уровень.</p></div>
         <div class="card step"><h3>План</h3><p>Составляем персональную программу и расписание.</p></div>
         <div class="card step"><h3>Тренировки</h3><p>Начинаем заниматься и отслеживаем прогресс каждую неделю.</p></div>
@@ -387,8 +416,7 @@
         <h2>Готов начать?</h2>
         <p class="lead">Напиши нам — ответим в течение дня и запишем на бесплатное пробное занятие.</p>
         <div class="actions">
-          <a href="https://t.me/your_telegram" class="btn" target="_blank" rel="noopener">Написать в Telegram</a>
-          <a href="https://discord.gg/your_invite" class="btn btn-ghost" target="_blank" rel="noopener">Discord</a>
+          <a href="https://discord.gg/dAW5wZqSMV" class="btn" target="_blank" rel="noopener">Присоединиться в Discord</a>
         </div>
       </div>
     </div>
@@ -399,8 +427,7 @@
   <div class="wrap foot">
     <div class="made">© <span id="year"></span> TS Academy · сделано с <img src="img/poop.png" alt="💩"></div>
     <div class="socials">
-      <a href="https://t.me/your_telegram" target="_blank" rel="noopener">Telegram</a>
-      <a href="https://discord.gg/your_invite" target="_blank" rel="noopener">Discord</a>
+      <a href="https://discord.gg/dAW5wZqSMV" target="_blank" rel="noopener">Discord</a>
       <a href="https://vk.com/your_group" target="_blank" rel="noopener">VK</a>
     </div>
     <div class="disclaimer">Неофициальный фан-сайт. Не связан с Team Spirit.</div>
