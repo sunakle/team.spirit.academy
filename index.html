@@ -76,8 +76,49 @@
   .hero p { font-size: 18px; color: var(--muted); max-width: 560px; margin-bottom: 36px; }
   .actions { display: flex; gap: 12px; flex-wrap: wrap; }
   .hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; }
-  .hero-img { width: 100%; max-width: 440px; justify-self: center; border-radius: 28px; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); transform: rotate(3deg); transition: transform .3s; }
-  .hero-link { display: block; justify-self: center; max-width: 440px; width: 100%; }
+  .hero-img { display: block; width: 100%; max-width: 440px; justify-self: center; border-radius: 28px; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); transform: rotate(3deg); transition: transform .3s; }
+  .hero-link {
+    position: relative; display: block; justify-self: center; max-width: 440px; width: 100%;
+    padding: 0; border: 0; background: none; cursor: pointer; font: inherit;
+  }
+  .ds-hover {
+    position: absolute; inset: 0; border-radius: 28px; transform: rotate(3deg);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+    background: rgba(88, 101, 242, .82); color: #fff; opacity: 0; transition: opacity .25s, transform .3s;
+  }
+  .ds-hover svg { width: 96px; height: 96px; transform: scale(.7); transition: transform .3s; }
+  .ds-hover b { font-family: Unbounded, sans-serif; font-size: 22px; }
+  .hero-link:hover .ds-hover, .hero-link:focus-visible .ds-hover { opacity: 1; transform: rotate(0) scale(1.03); }
+  .hero-link:hover .ds-hover svg { transform: scale(1); }
+  .hero-link:hover .hero-img { transform: rotate(0) scale(1.03); }
+
+  /* discord modal */
+  .ds-modal {
+    margin: auto; padding: 0; border: 0; border-radius: 20px; width: min(420px, calc(100% - 32px));
+    background: #313338; color: #f2f3f5; box-shadow: 0 30px 80px rgba(0, 0, 0, .6);
+  }
+  .ds-modal::backdrop { background: rgba(0, 0, 0, .7); backdrop-filter: blur(4px); }
+  .ds-modal[open] { animation: pop .25s cubic-bezier(0.215, 1, 0.36, 1); }
+  @keyframes pop { from { opacity: 0; transform: scale(.9); } }
+  .ds-top { background: #5865f2; padding: 22px 28px 52px; text-align: center; position: relative; }
+  .ds-top svg { width: 56px; height: 56px; color: #fff; }
+  .ds-top img {
+    position: absolute; left: 50%; bottom: -40px; transform: translateX(-50%);
+    width: 80px; height: 80px; border-radius: 22px; border: 5px solid #313338; object-fit: cover; background: #000;
+  }
+  .ds-body { padding: 52px 28px 28px; text-align: center; }
+  .ds-body small { color: #b5bac1; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; }
+  .ds-body h3 { font-size: 22px; margin: 6px 0 8px; }
+  .ds-body p { color: #b5bac1; font-size: 14px; margin-bottom: 6px; }
+  .ds-body code { display: inline-block; margin: 8px 0 22px; padding: 6px 10px; border-radius: 8px; background: #1e1f22; color: #00a8fc; font-size: 13px; }
+  .ds-actions { display: flex; gap: 10px; }
+  .ds-actions > * {
+    flex: 1; padding: 12px; border-radius: 10px; border: 0; font: inherit; font-weight: 600; cursor: pointer; text-align: center;
+  }
+  .ds-go { background: #5865f2; color: #fff; }
+  .ds-go:hover { background: #4752c4; }
+  .ds-cancel { background: #4e5058; color: #fff; }
+  .ds-cancel:hover { background: #6d6f78; }
   .hero-img:hover { transform: rotate(0) scale(1.03); }
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 72px; max-width: 640px; }
   .stat b { display: inline-block; font-family: Unbounded, sans-serif; font-size: 32px; }
@@ -269,7 +310,10 @@
         <div class="stat"><b>нет</b><span>игроков в про-сцене</span></div>
       </div>
      </div>
-      <a class="hero-link" href="https://discord.gg/dAW5wZqSMV" target="_blank" rel="noopener" title="Наш Discord"><img class="hero-img" src="img/hero.png" alt="Логотип TS Academy"></a>
+      <button class="hero-link" type="button" id="dsOpen" aria-label="Открыть Discord">
+        <img class="hero-img" src="img/hero.png" alt="Логотип TS Academy">
+        <span class="ds-hover"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg><b>Наш Discord</b></span>
+      </button>
     </div>
   </section>
 
@@ -471,10 +515,31 @@
   </div>
 </footer>
 
+<dialog class="ds-modal" id="dsModal">
+  <div class="ds-top"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg><img src="img/logo.png" alt=""></div>
+  <div class="ds-body">
+    <small>Вас пригласили на сервер</small>
+    <h3>TS Academy</h3>
+    <p>Вы покидаете сайт и переходите в Discord.</p>
+    <code>discord.gg/dAW5wZqSMV</code>
+    <div class="ds-actions">
+      <button class="ds-cancel" type="button" id="dsCancel">Отмена</button>
+      <a class="ds-go" href="https://discord.gg/dAW5wZqSMV" target="_blank" rel="noopener" id="dsGo">Перейти</a>
+    </div>
+  </div>
+</dialog>
+
 <script src="https://cdn.jsdelivr.net/npm/globe.gl@2.46.2/dist/globe.gl.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Окно перехода в Discord
+  const dsModal = document.getElementById('dsModal');
+  document.getElementById('dsOpen').onclick = () => dsModal.showModal();
+  document.getElementById('dsCancel').onclick = () => dsModal.close();
+  document.getElementById('dsGo').onclick = () => dsModal.close();
+  dsModal.addEventListener('click', e => { if (e.target === dsModal) dsModal.close(); });
 
   // Плавная прокрутка по якорям: кривая cubic-bezier(0.215, 1, 0.36, 1)
   function bezier(x1, y1, x2, y2) {
