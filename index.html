@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Spirit Academy — киберспортивная академия</title>
+<title>TS Academy — киберспортивная академия</title>
+<link rel="icon" href="img/favicon.png">
 <meta name="description" content="Киберспортивная академия: обучение Dota 2 и CS2 с профессиональными тренерами.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,7 +44,9 @@
     border-bottom: 1px solid var(--line);
   }
   .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-  .logo { font-family: Unbounded, sans-serif; font-weight: 800; font-size: 18px; letter-spacing: .5px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 18px; letter-spacing: .5px; }
+  .logo img { width: 40px; height: 40px; }
+  .stripe { height: 5px; background: url(img/flag.png) center / 100% 100%; }
   .logo span { color: var(--accent); }
   .menu { display: flex; gap: 28px; font-size: 15px; color: var(--muted); }
   .menu a:hover { color: var(--text); }
@@ -71,6 +74,9 @@
   .hero h1 { font-size: clamp(36px, 7vw, 72px); font-weight: 800; margin-bottom: 24px; }
   .hero p { font-size: 18px; color: var(--muted); max-width: 560px; margin-bottom: 36px; }
   .actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; }
+  .hero-img { width: 100%; max-width: 440px; justify-self: center; border-radius: 28px; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); transform: rotate(3deg); transition: transform .3s; }
+  .hero-img:hover { transform: rotate(0) scale(1.03); }
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 72px; max-width: 640px; }
   .stat b { display: block; font-family: Unbounded, sans-serif; font-size: 32px; color: var(--accent); }
   .stat span { color: var(--muted); font-size: 14px; }
@@ -104,10 +110,10 @@
 
   /* coaches */
   .coach { text-align: center; }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
   .avatar {
-    width: 96px; height: 96px; border-radius: 50%; margin: 0 auto 16px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    display: grid; place-items: center; font-family: Unbounded, sans-serif; font-size: 30px; color: #111;
+    width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 16px; object-fit: contain;
+    background: #fff; padding: 8px; border: 3px solid var(--accent);
   }
   .coach .role { color: var(--accent); font-size: 14px; margin-bottom: 8px; }
 
@@ -139,11 +145,17 @@
   footer { border-top: 1px solid var(--line); padding: 40px 0; color: var(--muted); font-size: 14px; }
   .foot { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
   .socials { display: flex; gap: 20px; }
+  .made { display: flex; align-items: center; gap: 8px; }
+  .made img { width: 28px; height: 28px; }
+  .disclaimer { width: 100%; font-size: 12px; opacity: .7; }
   .socials a:hover { color: var(--accent); }
 
   @media (max-width: 860px) {
     .menu { display: none; }
     .grid-3, .grid-2 { grid-template-columns: 1fr; }
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-img { max-width: 300px; }
     section { padding: 72px 0; }
     .hero { padding: 80px 0; }
   }
@@ -157,7 +169,7 @@
 
 <header>
   <div class="wrap nav">
-    <a href="#" class="logo">SPIRIT<span>.</span>ACADEMY</a>
+    <a href="#" class="logo"><img src="img/logo.png" alt=""><div>TS<span>.</span>ACADEMY</div></a>
     <nav class="menu">
       <a href="#about">О нас</a>
       <a href="#programs">Программы</a>
@@ -167,11 +179,13 @@
     </nav>
     <a href="#contact" class="btn">Записаться</a>
   </div>
+  <div class="stripe"></div>
 </header>
 
 <main>
   <section class="hero">
-    <div class="wrap">
+    <div class="wrap hero-grid">
+     <div>
       <span class="tag">🎮 Набор в новый сезон открыт</span>
       <h1>Стань <span class="grad">про-игроком</span><br>вместе с нами</h1>
       <p>Киберспортивная академия для тех, кто хочет расти: индивидуальные тренировки, разбор игр и путь в профессиональную команду.</p>
@@ -184,6 +198,8 @@
         <div class="stat"><b>12</b><span>тренеров</span></div>
         <div class="stat"><b>30+</b><span>игроков в про-сцене</span></div>
       </div>
+     </div>
+      <img class="hero-img" src="img/hero.png" alt="Логотип TS Academy">
     </div>
   </section>
 
@@ -263,24 +279,30 @@
     <div class="wrap">
       <h2>Тренеры</h2>
       <p class="lead">Люди, которые знают путь в профессиональный киберспорт изнутри.</p>
-      <div class="grid grid-3">
+      <div class="grid grid-4">
         <div class="card coach">
-          <div class="avatar">А</div>
+          <img class="avatar" src="img/troll.png" alt="">
           <h3>Алексей</h3>
           <div class="role">Главный тренер · Dota 2</div>
           <p>8 лет в киберспорте, опыт тренерской работы в про-командах.</p>
         </div>
         <div class="card coach">
-          <div class="avatar">Д</div>
+          <img class="avatar" src="img/angry.png" alt="">
           <h3>Дмитрий</h3>
           <div class="role">Тренер · CS2</div>
           <p>Бывший про-игрок, специалист по тактике и командной игре.</p>
         </div>
         <div class="card coach">
-          <div class="avatar">М</div>
+          <img class="avatar" src="img/tears.png" alt="">
           <h3>Мария</h3>
           <div class="role">Спортивный психолог</div>
           <p>Помогает справляться со стрессом и держать фокус на турнирах.</p>
+        </div>
+        <div class="card coach">
+          <img class="avatar" src="img/funny.png" alt="">
+          <h3>Игорь</h3>
+          <div class="role">Аналитик</div>
+          <p>Разбирает реплеи и находит ошибки, которые не видны в игре.</p>
         </div>
       </div>
     </div>
@@ -338,12 +360,13 @@
 
 <footer>
   <div class="wrap foot">
-    <div>© <span id="year"></span> Spirit Academy</div>
+    <div class="made">© <span id="year"></span> TS Academy · сделано с <img src="img/poop.png" alt="💩"></div>
     <div class="socials">
       <a href="https://t.me/your_telegram" target="_blank" rel="noopener">Telegram</a>
       <a href="https://discord.gg/your_invite" target="_blank" rel="noopener">Discord</a>
       <a href="https://vk.com/your_group" target="_blank" rel="noopener">VK</a>
     </div>
+    <div class="disclaimer">Неофициальный фан-сайт. Не связан с Team Spirit.</div>
   </div>
 </footer>
 
