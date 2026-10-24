@@ -541,19 +541,19 @@
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // Радужные волны в подвале: каждая волна — сумма синусоид со случайными параметрами
+  // Сине-голубые волны в подвале: каждая волна — сумма синусоид со случайными параметрами
   (() => {
     const cv = document.getElementById('waves');
     const ctx = cv.getContext('2d');
     const rnd = (a, b) => a + Math.random() * (b - a);
-    const colors = ['#ff2d2d', '#ff8c1a', '#ffe81a', '#2ecc40', '#1e90ff', '#a23cff'];
+    const colors = ['#4fc3ff', '#1e6bff', '#0a3cff', '#38a8ff'];
     const waves = Array.from({ length: 4 }, (_, i) => ({
       base: 0.45 + i * 0.12,
       alpha: 0.35 + i * 0.18,
       shift: rnd(0, 1),
-      drift: rnd(0.05, 0.12) * (Math.random() < 0.5 ? -1 : 1),
+      drift: rnd(0.015, 0.04) * (Math.random() < 0.5 ? -1 : 1),
       parts: Array.from({ length: 3 }, () => ({
-        amp: rnd(0.04, 0.14), freq: rnd(0.6, 2.4), speed: rnd(0.6, 1.4) * (Math.random() < 0.5 ? -1 : 1), phase: rnd(0, 6.28)
+        amp: rnd(0.04, 0.14), freq: rnd(0.6, 2.4), speed: rnd(0.2, 0.5) * (Math.random() < 0.5 ? -1 : 1), phase: rnd(0, 6.28)
       }))
     }));
     let w, h, visible = true, raf, fadeStart = null;
