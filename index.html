@@ -19,6 +19,7 @@
     --muted: #9aa3b5;
     --accent: #f5c518;
     --accent-2: #ff7a1a;
+    --rainbow: linear-gradient(90deg, #ff2d2d, #ff8c1a, #ffe81a, #2ecc40, #1e90ff, #a23cff);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
@@ -34,7 +35,9 @@
   h2 { font-size: clamp(28px, 4vw, 40px); margin-bottom: 12px; }
   .lead { color: var(--muted); max-width: 620px; margin-bottom: 40px; }
   section { padding: 96px 0; }
-  .grad { background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .grad, .logo span, .stat b, .program .game, .program li::before, .coach .role, .step::before, summary::after {
+    background: var(--rainbow); -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
 
   /* header */
   header {
@@ -47,8 +50,7 @@
   .logo { display: flex; align-items: center; gap: 10px; font-family: Unbounded, sans-serif; font-weight: 800; font-size: 18px; letter-spacing: .5px; }
   .logo img { width: 40px; height: 40px; }
   .stripe { height: 5px; background: url(img/flag.png) center / 100% 100%; }
-  .logo span { color: var(--accent); }
-  .menu { display: flex; gap: 28px; font-size: 15px; color: var(--muted); }
+    .menu { display: flex; gap: 28px; font-size: 15px; color: var(--muted); }
   .menu a:hover { color: var(--text); }
   .btn {
     display: inline-block; padding: 14px 28px; border-radius: 10px;
@@ -78,8 +80,8 @@
   .hero-img { width: 100%; max-width: 440px; justify-self: center; border-radius: 28px; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); transform: rotate(3deg); transition: transform .3s; }
   .hero-img:hover { transform: rotate(0) scale(1.03); }
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 72px; max-width: 640px; }
-  .stat b { display: block; font-family: Unbounded, sans-serif; font-size: 32px; color: var(--accent); }
-  .stat span { color: var(--muted); font-size: 14px; }
+  .stat b { display: inline-block; font-family: Unbounded, sans-serif; font-size: 32px; }
+  .stat span { display: block; color: var(--muted); font-size: 14px; }
 
   /* cards */
   .grid { display: grid; gap: 20px; }
@@ -100,11 +102,11 @@
 
   /* programs */
   .program { padding: 36px; }
-  .program .game { font-size: 13px; color: var(--accent); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+  .program .game { font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; display: inline-block; }
   .program h3 { font-size: 26px; margin: 8px 0 14px; }
   .program ul { list-style: none; margin: 20px 0 28px; }
   .program li { padding: 8px 0; border-bottom: 1px dashed var(--line); color: var(--muted); font-size: 15px; }
-  .program li::before { content: "▸ "; color: var(--accent); }
+  .program li::before { content: "▸ "; }
   .price { font-family: Unbounded, sans-serif; font-size: 22px; }
   .price small { font-family: Inter, sans-serif; font-size: 14px; color: var(--muted); font-weight: 400; }
 
@@ -115,7 +117,7 @@
     width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 16px; object-fit: cover;
     border: 3px solid var(--accent);
   }
-  .coach .role { color: var(--accent); font-size: 14px; margin-bottom: 8px; }
+  .coach .role { display: inline-block; font-size: 14px; margin-bottom: 8px; }
 
   /* steps */
   .steps { counter-reset: step; }
@@ -123,7 +125,7 @@
   .step::before {
     counter-increment: step; content: "0" counter(step);
     position: absolute; top: 24px; left: 28px;
-    font-family: Unbounded, sans-serif; font-size: 28px; color: var(--accent);
+    font-family: Unbounded, sans-serif; font-size: 28px;
   }
 
   /* cta */
@@ -138,7 +140,7 @@
   /* faq */
   details { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px 24px; margin-bottom: 12px; }
   summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
-  summary::after { content: "+"; color: var(--accent); font-size: 20px; line-height: 1; }
+  summary::after { content: "+"; font-size: 20px; line-height: 1; }
   details[open] summary::after { content: "−"; }
   details p { color: var(--muted); margin-top: 12px; }
 
@@ -194,9 +196,9 @@
         <a href="#programs" class="btn btn-ghost">Смотреть программы</a>
       </div>
       <div class="stats">
-        <div class="stat"><b>200+</b><span>учеников</span></div>
-        <div class="stat"><b>12</b><span>тренеров</span></div>
-        <div class="stat"><b>30+</b><span>игроков в про-сцене</span></div>
+        <div class="stat"><b>1</b><span>ученик</span></div>
+        <div class="stat"><b>2</b><span>тренера</span></div>
+        <div class="stat"><b>нет</b><span>игроков в про-сцене</span></div>
       </div>
      </div>
       <img class="hero-img" src="img/hero.png" alt="Логотип TS Academy">
